@@ -2,7 +2,14 @@
 
 **Final A-to-Z Technical Design, Implementation, Demonstration & Engineering Handover Guide**
 
-> **Author / Lead Presenter:** Ramu Venkatesan | **Target Environment:** Databricks Asset Bundle (`machine_health.prod` / `machine_health.dev`) | **Compute Cluster:** `clairai-model-metrics` (`0828-125833-31m6neog`) | **Bundle:** `clarai_machine_health`
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Rakesh--infosrc%2Fclarai__machine__health-blue?logo=github)](https://github.com/Rakesh-infosrc/clarai_machine_health)
+[![Platform](https://img.shields.io/badge/Platform-Databricks%20Asset%20Bundles%20(DAB)-red)](https://docs.databricks.com/dev-tools/bundles/index.html)
+[![Target Schema](https://img.shields.io/badge/Unity%20Catalog-machine__health.prod-green)](#)
+[![Cluster](https://img.shields.io/badge/Compute-clairai--model--metrics-orange)](#)
+
+> **Repository:** [https://github.com/Rakesh-infosrc/clarai_machine_health](https://github.com/Rakesh-infosrc/clarai_machine_health)  
+> **Lead Presenter / Author:** Ramu Venkatesan | **Target Environment:** Databricks Asset Bundle (`machine_health.prod` / `machine_health.dev`)  
+> **Compute Cluster:** `clairai-model-metrics` (`0828-125833-31m6neog`) | **Bundle Name:** `clarai_machine_health`
 
 ---
 
@@ -14,43 +21,45 @@ This repository contains the production implementation of the **ClairAI Machine 
 
 ```
 clarai_machine_health/
-├── databricks.yml                      # DAB bundle configuration (dev & prod targets)
-├── README.md                           # Main technical documentation & handover runbook
-├── pyproject.toml                      # Project metadata & Python dependencies
-├── resources/                          # Databricks Asset Bundle workflow jobs
-│   ├── clarai_machine_health_fan.yml          # Fan pipeline (Mon-Wed, fan_v1 baseline)
-│   ├── clarai_machine_health_fan_v2.yml       # Fan pipeline (Thu-Sat, fan_v2 candidate)
-│   ├── clarai_machine_health_motor.yml        # Motor pipeline (every 6 hrs)
-│   ├── clarai_machine_health_motor_weekly_run.yml # Motor weekly run (cron: 0 0 16 ? * TUE,FRI)
-│   ├── clairai_machine_health_compressor.yml  # Compressor pipeline (every 5 hrs)
+├── databricks.yml                                     # DAB bundle configuration (dev & prod targets)
+├── README.md                                          # Main technical documentation & handover runbook
+├── pyproject.toml                                     # Project metadata & Python dependencies
+├── resources/                                         # Databricks Asset Bundle workflow jobs
+│   ├── clarai_machine_health_fan.yml                  # Fan pipeline (Mon-Wed, fan_v1 baseline)
+│   ├── clarai_machine_health_fan_v2.yml               # Fan pipeline (Thu-Sat, fan_v2 candidate)
+│   ├── clarai_machine_health_motor.yml                # Motor pipeline (every 6 hrs)
+│   ├── clarai_machine_health_motor_weekly_run.yml     # Motor weekly run (cron: 0 0 16 ? * TUE,FRI)
+│   ├── clairai_machine_health_compressor.yml          # Compressor pipeline (every 5 hrs)
 │   ├── clairai_machine_health_compressor_weekly_run.yml # Compressor weekly run (cron: 0 0 16 ? * TUE,FRI)
-│   ├── clarai_job_cost_monitoring.yml         # DBU and USD cost tracking pipeline
-│   └── sensor_data.yml                        # Synthetic sensor telemetry generation job
-│   ├── Databricks Asset Bundle (DAB).docx     # DAB architecture document
-│   └── clarai.prod Table Schema Reference.pdf # Unity Catalog schema reference
-├── src/                                # Databricks notebooks (.ipynb format)
-│   ├── 00_setup.ipynb                         # Catalog, schema & 9 Delta tables DDL
-│   ├── common_utils.ipynb                     # Instrumentation, audit context & fault injection
-│   ├── score_readings.ipynb                   # Anomaly scoring & dynamic model inference
-│   ├── apply_health_rules.ipynb               # Idempotent MERGE into alert_candidates
-│   ├── build_maintenance_advice.ipynb         # Vibration inspection recommendations
-│   ├── build_thermal_advice.ipynb             # Cooling maintenance recommendations
-│   ├── generate_fan_model_issues.ipynb        # Case 3: Reviewer feedback & ClairAI feed
-│   ├── collect_run_audit.ipynb                # End-to-end task audit & RCA evidence capture
-│   ├── job_cost_monitoring.ipynb              # Billing telemetry aggregation
-│   └── synthetic sensor data.ipynb            # Telemetry generator
-├── tests/                              # Unit tests & validation fixtures
-│   ├── conftest.py                            # Databricks Connect test configuration
-│   ├── test_pipeline_helpers.py               # Scope & audit column unit tests
-│   └── sample_taxis_test.py                   # Databricks Connect test fixture
-└── Documents/                          # Handover documentation
-    └── ClairAI_Machine_Health_POC_Final_A_to_Z_Technical_Documentation.md
+│   ├── clarai_job_cost_monitoring.yml                 # DBU and USD cost tracking pipeline
+│   └── sensor_data.yml                                # Synthetic sensor telemetry generation job
+├── src/                                               # Databricks notebooks (.ipynb format)
+│   ├── 00_setup.ipynb                                 # Catalog, schema & 9 Delta tables DDL
+│   ├── common_utils.ipynb                             # Instrumentation, audit context & fault injection
+│   ├── score_readings.ipynb                           # Anomaly scoring & dynamic model inference
+│   ├── apply_health_rules.ipynb                       # Idempotent MERGE into alert_candidates
+│   ├── build_maintenance_advice.ipynb                 # Vibration inspection recommendations
+│   ├── build_thermal_advice.ipynb                     # Cooling maintenance recommendations
+│   ├── generate_fan_model_issues.ipynb                # Case 3: Reviewer feedback & ClairAI feed
+│   ├── collect_run_audit.ipynb                        # End-to-end task audit & RCA evidence capture
+│   ├── job_cost_monitoring.ipynb                      # Billing telemetry aggregation
+│   └── synthetic sensor data.ipynb                    # Telemetry generator
+├── tests/                                             # Unit tests & validation fixtures
+│   ├── conftest.py                                    # Databricks Connect test configuration
+│   ├── test_pipeline_helpers.py                       # Scope & audit column unit tests
+│   └── sample_taxis_test.py                           # Databricks Connect test fixture
+└── Documents/                                         # Architecture, handover & schema documentation
+    ├── ClairAI_Machine_Health_POC_Final_A_to_Z_Technical_Documentation.md
+    ├── ClairAI_Machine_Health_Technical_Documentation.docx
+    ├── Databricks Asset Bundle (DAB).docx
+    └── clarai.prod Table Schema Reference.pdf
 ```
 
 ### Essential DAB Commands
 
 | Action | Command |
 | :--- | :--- |
+| **Clone Repository** | `git clone https://github.com/Rakesh-infosrc/clarai_machine_health.git` |
 | **Validate Bundle (Dev)** | `databricks bundle validate` |
 | **Validate Bundle (Prod)** | `databricks bundle validate -t prod` |
 | **Deploy Bundle (Dev)** | `databricks bundle deploy -t dev` |
@@ -58,7 +67,9 @@ clarai_machine_health/
 | **Run Fan Baseline (`fan_v1`)** | `databricks bundle run clarai_machine_health_fan` |
 | **Run Fan Candidate (`fan_v2`)** | `databricks bundle run clarai_machine_health_fan_v2` |
 | **Run Motor Pipeline** | `databricks bundle run clarai_machine_health_motor` |
+| **Run Motor Weekly Run** | `databricks bundle run clarai_machine_health_motor_weekly_run` |
 | **Run Compressor Pipeline** | `databricks bundle run clairai_machine_health_compressor` |
+| **Run Compressor Weekly Run** | `databricks bundle run clairai_machine_health_compressor_weekly_run` |
 | **Run Cost Monitoring** | `databricks bundle run clarai_job_cost_monitoring` |
 | **Run Synthetic Data Generation** | `databricks bundle run sensor_data` |
 
@@ -83,7 +94,7 @@ This document describes the implemented Databricks proof of concept, the executi
 | Current workspace folder | /Workspace/.bundle/clarai_machine_health/ or /Workspace/ClarAi/MachineHealth/                             |
 | Bundle names             | clarai_machine_health; clarai_machine_health_case3                                                       |
 | Compute Cluster          | `clairai-model-metrics` (Cluster ID: `0828-125833-31m6neog`)                                             |
-| Jobs                     | `clairai_machine_health_compressor`; `clairai_machine_health_compressor_weekly_run`; `clarai_machine_health_motor`; `Clone_of_clarai_machine_health_motor_weekly_run`; `clarai_machine_health_fan`; `clarai_machine_health_fan_v2`; `clarai_job_cost_monitoring`; `sensor_data` |
+| Jobs                     | `clairai_machine_health_compressor`; `clairai_machine_health_compressor_weekly_run`; `clarai_machine_health_motor`; `clarai_machine_health_motor_weekly_run`; `clarai_machine_health_fan`; `clarai_machine_health_fan_v2`; `clarai_job_cost_monitoring`; `sensor_data` |
 | Machine families         | Motor; Compressor; Fan                                                                                   |
 | Demonstrated cases       | Case 1 — local disk exhaustion; Case 2 — concurrent Delta MERGE; Case 3 — accidental model deployment    |
 | Primary RCA/Audit output | pipeline_run_audit; alert_candidates (standardized 13-column issue/review schema)                        |
@@ -778,41 +789,34 @@ The POC validation performed during implementation covered clean execution, disk
 
 # Appendix A — Final Audit Table Schema
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>CREATE OR REPLACE TABLE pipeline_run_audit (<br />
-workspace_id STRING,<br />
-job_id STRING,<br />
-job_name STRING,<br />
-asset_type STRING,<br />
-job_run_id STRING,<br />
-task_run_id STRING,<br />
-task_key STRING,<br />
-machine_type STRING,<br />
-attempt_number INT,<br />
-status STRING,<br />
-start_time TIMESTAMP,<br />
-end_time TIMESTAMP,<br />
-cluster_id STRING,<br />
-error_message STRING,<br />
-run_page_url STRING,<br />
-task_run_page_url STRING,<br />
-table_name STRING,<br />
-operation STRING,<br />
-conflicting_job_run_id STRING,<br />
-conflicting_run_page_url STRING,<br />
-read_version BIGINT,<br />
-conflicting_version BIGINT<br />
-);</td>
-</tr>
-</tbody>
-</table>
+```sql
+CREATE OR REPLACE TABLE machine_health.prod.pipeline_run_audit (
+  workspace_id             STRING,     -- Databricks workspace identifier
+  job_id                   STRING,     -- Databricks Job ID
+  job_name                 STRING,     -- Pipeline job name (e.g. clarai_machine_health_motor)
+  asset_type               STRING,     -- Asset family (Motor, Compressor, Fan)
+  job_run_id               STRING,     -- Databricks parent job run ID
+  task_run_id              STRING,     -- Databricks individual task run ID
+  task_key                 STRING,     -- DAG task name (e.g. score_readings, apply_health_rules)
+  machine_type             STRING,     -- Machine category
+  attempt_number           INT,        -- Task attempt sequence (1, 2, ...)
+  status                   STRING,     -- SUCCESS, FAILED, UPSTREAM_FAILED
+  start_time               TIMESTAMP,  -- Task execution start timestamp
+  end_time                 TIMESTAMP,  -- Task execution completion timestamp
+  cluster_id               STRING,     -- Compute cluster ID (0828-125833-31m6neog)
+  error_message            STRING,     -- Full exception trace or skipped explanation
+  run_page_url             STRING,     -- Direct link to parent job run in Databricks UI
+  task_run_page_url        STRING,     -- Direct link to task run in Databricks UI
+  table_name               STRING,     -- Target Delta table involved in operation
+  operation                STRING,     -- MERGE, APPEND, WRITE
+  conflicting_job_run_id   STRING,     -- Competing run ID in concurrent write conflicts
+  conflicting_run_page_url STRING,     -- Direct link to competing run in Databricks UI
+  read_version             BIGINT,     -- Delta table version when read began
+  conflicting_version      BIGINT      -- Delta table version committed by competing run
+);
+```
 
-Note: use ALTER COLUMN FIRST/AFTER to reorder an existing Delta table without replacing current evidence. Do not execute CREATE OR REPLACE against the live evidence table merely to change order.
+> **Note:** To reorder an existing Delta table without replacing historical RCA evidence, use `ALTER TABLE ... ALTER COLUMN ... FIRST/AFTER`. Never execute a destructive `CREATE OR REPLACE TABLE` against a live audit evidence table during active operations.
 
 # Appendix B — Current Setup DDL
 
@@ -971,194 +975,173 @@ CREATE OR REPLACE TABLE pipeline_cost_summary (
 
 # Appendix C — Current collect_run_audit Implementation
 
-<table>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>from databricks.sdk import WorkspaceClient<br />
-from pyspark.sql import functions as F<br />
-<br />
-CAT = "clarai.prod"<br />
-AUDIT = f"{CAT}.pipeline_run_audit"<br />
-<br />
-w = WorkspaceClient()<br />
-<br />
-job_id = dbutils.widgets.get("job_id")<br />
-job_run_id = dbutils.widgets.get("job_run_id")<br />
-task_run_id = dbutils.widgets.get("task_run_id")<br />
-machine_type = dbutils.widgets.get("machine_type")<br />
-<br />
-if task_run_id:<br />
-try:<br />
-current_task = w.jobs.get_run(int(task_run_id))<br />
-if current_task.job_run_id:<br />
-job_run_id = str(current_task.job_run_id)<br />
-if current_task.job_id:<br />
-job_id = str(current_task.job_id)<br />
-except Exception as e:<br />
-print(f"Task-run lookup failed: {e}")<br />
-<br />
-if not job_run_id:<br />
-candidates = (<br />
-spark.table(AUDIT)<br />
-.where(F.col("job_id") == job_id)<br />
-.where(F.col("machine_type") == machine_type)<br />
-.where(F.col("job_run_id").isNotNull())<br />
-.select("job_run_id", "start_time")<br />
-.orderBy(F.col("start_time").desc())<br />
-.limit(1)<br />
-.collect()<br />
-)<br />
-if candidates:<br />
-job_run_id = str(candidates[0]["job_run_id"])<br />
-<br />
-if not job_run_id:<br />
-raise ValueError("Could not determine job_run_id.")<br />
-<br />
-parent = w.jobs.get_run(int(job_run_id))<br />
-<br />
-rows = (<br />
-spark.table(AUDIT)<br />
-.where(F.col("job_run_id") == job_run_id)<br />
-.collect()<br />
-)<br />
-<br />
-workspace_id = None<br />
-job_name = None<br />
-asset_type = machine_type<br />
-<br />
-for r in rows:<br />
-if r.workspace_id:<br />
-workspace_id = r.workspace_id<br />
-if r.job_name:<br />
-job_name = r.job_name<br />
-if r.asset_type:<br />
-asset_type = r.asset_type<br />
-<br />
-for r in rows:<br />
-if not r.task_run_id:<br />
-continue<br />
-<br />
-try:<br />
-task_run = w.jobs.get_run(int(r.task_run_id))<br />
-task_url = task_run.run_page_url<br />
-<br />
-cluster_id = None<br />
-if task_run.cluster_instance:<br />
-cluster_id = task_run.cluster_instance.cluster_id<br />
-<br />
-conflicting_url = None<br />
-if r.conflicting_job_run_id:<br />
-try:<br />
-conflicting_run = w.jobs.get_run(<br />
-int(r.conflicting_job_run_id)<br />
-)<br />
-conflicting_url = conflicting_run.run_page_url<br />
-except Exception as e:<br />
-print(<br />
-f"Could not resolve conflicting "<br />
-f"run {r.conflicting_job_run_id}: {e}"<br />
-)<br />
-<br />
-spark.sql(<br />
-f"""<br />
-UPDATE {AUDIT}<br />
-SET<br />
-run_page_url = :run_url,<br />
-task_run_page_url = :task_url,<br />
-cluster_id = :cluster_id,<br />
-conflicting_run_page_url = :conflict_url<br />
-WHERE<br />
-job_run_id = :job_run_id<br />
-AND task_key = :task_key<br />
-AND attempt_number = :attempt_number<br />
-""",<br />
-args={<br />
-"run_url": parent.run_page_url,<br />
-"task_url": task_url,<br />
-"cluster_id": cluster_id,<br />
-"conflict_url": conflicting_url,<br />
-"job_run_id": job_run_id,<br />
-"task_key": r.task_key,<br />
-"attempt_number": r.attempt_number<br />
-}<br />
-)<br />
-<br />
-except Exception as e:<br />
-print(f"Could not enrich {r.task_key}: {e}")<br />
-<br />
-seen = {<br />
-r.task_key<br />
-for r in rows<br />
-if r.task_key<br />
-}<br />
-<br />
-for task in parent.tasks:<br />
-result_state = (<br />
-task.state.result_state.value<br />
-if task.state and task.state.result_state<br />
-else None<br />
-)<br />
-<br />
-if (<br />
-task.task_key not in seen<br />
-and result_state == "UPSTREAM_FAILED"<br />
-):<br />
-spark.sql(<br />
-f"""<br />
-INSERT INTO {AUDIT}<br />
-(<br />
-workspace_id,<br />
-job_name,<br />
-asset_type,<br />
-job_id,<br />
-job_run_id,<br />
-task_key,<br />
-machine_type,<br />
-attempt_number,<br />
-status,<br />
-error_message,<br />
-run_page_url<br />
-)<br />
-VALUES<br />
-(<br />
-:workspace_id,<br />
-:job_name,<br />
-:asset_type,<br />
-:job_id,<br />
-:job_run_id,<br />
-:task_key,<br />
-:machine_type,<br />
-1,<br />
-'UPSTREAM_FAILED',<br />
-'Task skipped because an upstream task failed',<br />
-:run_page_url<br />
-)<br />
-""",<br />
-args={<br />
-"workspace_id": workspace_id,<br />
-"job_name": job_name,<br />
-"asset_type": asset_type,<br />
-"job_id": job_id,<br />
-"job_run_id": job_run_id,<br />
-"task_key": task.task_key,<br />
-"machine_type": machine_type,<br />
-"run_page_url": parent.run_page_url<br />
-}<br />
-)<br />
-<br />
-print("collect_run_audit completed successfully.")</td>
-</tr>
-</tbody>
-</table>
+The following production code from `src/collect_run_audit.ipynb` executes with `run_if: ALL_DONE` to guarantee that RCA telemetry and skipped upstream tasks are permanently recorded in `pipeline_run_audit`:
+
+```python
+# Databricks notebook source
+# MAGIC %run ./common_utils
+
+# COMMAND ----------
+from databricks.sdk import WorkspaceClient
+from pyspark.sql import functions as F
+
+CAT = "machine_health.prod"
+AUDIT = f"{CAT}.pipeline_run_audit"
+
+w = WorkspaceClient()
+
+# Get job/task parameters
+job_id = dbutils.widgets.get("job_id")
+job_run_id = dbutils.widgets.get("job_run_id")
+task_run_id = dbutils.widgets.get("task_run_id")
+machine_type = dbutils.widgets.get("machine_type")
+
+# Resolve parent job run
+if task_run_id:
+    try:
+        current_task = w.jobs.get_run(int(task_run_id))
+        if current_task.job_run_id:
+            job_run_id = str(current_task.job_run_id)
+        if current_task.job_id:
+            job_id = str(current_task.job_id)
+    except Exception as e:
+        print(f"Task-run lookup failed: {e}")
+
+# Fallback if job_run_id is empty
+if not job_run_id:
+    fallback = spark.table(AUDIT).where(
+        F.col("job_run_id").isNotNull() & (F.col("job_run_id") != "")
+    )
+    if job_id:
+        fallback = fallback.where(F.col("job_id") == job_id)
+    if machine_type:
+        fallback = fallback.where(F.col("machine_type") == machine_type)
+    candidates = (
+        fallback
+        .select("job_run_id", "start_time")
+        .orderBy(F.col("start_time").desc())
+        .limit(1)
+        .collect()
+    )
+    if candidates:
+        job_run_id = str(candidates[0]["job_run_id"])
+
+if not job_run_id:
+    raise ValueError("Could not determine job_run_id.")
+
+# Get parent Job Run details from SDK
+parent = w.jobs.get_run(int(job_run_id))
+print(f"job_id     = {job_id}")
+print(f"job_run_id = {job_run_id}")
+print(f"run_url    = {parent.run_page_url}")
+
+# Read audit rows for this job run
+rows = spark.table(AUDIT).where(F.col("job_run_id") == job_run_id).collect()
+print(f"Audit rows = {len(rows)}")
+
+workspace_id = None
+job_name = None
+asset_type = machine_type
+
+for r in rows:
+    if r.workspace_id:
+        workspace_id = r.workspace_id
+    if r.job_name:
+        job_name = r.job_name
+    if r.asset_type:
+        asset_type = r.asset_type
+
+# Enrich each existing audit record with Databricks UI URLs & cluster IDs
+for r in rows:
+    if not r.task_run_id:
+        continue
+    try:
+        task_run = w.jobs.get_run(int(r.task_run_id))
+        task_url = task_run.run_page_url
+        cluster_id = task_run.cluster_instance.cluster_id if task_run.cluster_instance else None
+        conflicting_url = None
+
+        if r.conflicting_job_run_id:
+            try:
+                conflicting_run = w.jobs.get_run(int(r.conflicting_job_run_id))
+                conflicting_url = conflicting_run.run_page_url
+            except Exception as e:
+                print(f"Could not resolve conflicting run {r.conflicting_job_run_id}: {e}")
+
+        print(f"Updating {r.task_key} attempt {r.attempt_number}")
+        spark.sql(
+            f'''
+            UPDATE {AUDIT}
+            SET
+                run_page_url = :run_url,
+                task_run_page_url = :task_url,
+                cluster_id = :cluster_id,
+                conflicting_run_page_url = :conflict_url
+            WHERE
+                job_run_id = :job_run_id
+                AND task_key = :task_key
+                AND attempt_number = :attempt_number
+            ''',
+            args={
+                "run_url": parent.run_page_url,
+                "task_url": task_url,
+                "cluster_id": cluster_id,
+                "conflict_url": conflicting_url,
+                "job_run_id": job_run_id,
+                "task_key": r.task_key,
+                "attempt_number": r.attempt_number
+            }
+        )
+    except Exception as e:
+        print(f"Could not enrich {r.task_key}: {e}")
+
+# Find tasks already audited
+seen = {r.task_key for r in rows if r.task_key}
+
+# Add missing UPSTREAM_FAILED tasks so DAG failure consequences are visible
+for task in parent.tasks:
+    result_state = (
+        task.state.result_state.value
+        if task.state and task.state.result_state
+        else None
+    )
+    if task.task_key not in seen and result_state == "UPSTREAM_FAILED":
+        print(f"Adding UPSTREAM_FAILED: {task.task_key}")
+        spark.sql(
+            f'''
+            INSERT INTO {AUDIT}
+            (
+                workspace_id, job_name, asset_type, job_id, job_run_id,
+                task_key, machine_type, attempt_number, status,
+                error_message, run_page_url
+            )
+            VALUES
+            (
+                :workspace_id, :job_name, :asset_type, :job_id, :job_run_id,
+                :task_key, :machine_type, 1, 'UPSTREAM_FAILED',
+                'Task skipped because an upstream task failed', :run_page_url
+            )
+            ''',
+            args={
+                "workspace_id": workspace_id,
+                "job_name": job_name,
+                "asset_type": asset_type,
+                "job_id": job_id,
+                "job_run_id": job_run_id,
+                "task_key": task.task_key,
+                "machine_type": machine_type,
+                "run_page_url": parent.run_page_url
+            }
+        )
+
+print("collect_run_audit completed successfully.")
+```
 
 # Appendix D — Production Databricks Asset Bundle (DAB) Resources
 
-The Databricks Asset Bundle is configured with target `dev` (default) and `prod`, deployed to cluster `clairai-model-metrics` (`0828-125833-31m6neog`):
+The Databricks Asset Bundle is configured with target `dev` (default) and `prod`, deployed to cluster `clairai-model-metrics` (`0828-125833-31m6neog`). All 8 workflow job YAML files live in `resources/*.yml`:
 
-### 1. `databricks.yml`
+### 1. `databricks.yml` (Root Bundle Configuration)
 ```yaml
 bundle:
   name: clarai_machine_health
@@ -1186,7 +1169,7 @@ variables:
     default: dev
 ```
 
-### 2. `resources/clarai_machine_health_fan.yml` (Mon-Wed Approved Baseline)
+### 2. `resources/clarai_machine_health_fan.yml` (Fan Baseline — Mon-Wed 09:10 UTC)
 ```yaml
 resources:
   jobs:
@@ -1343,7 +1326,7 @@ resources:
           default: clarai_machine_health_fan
 ```
 
-### 3. `resources/clarai_machine_health_fan_v2.yml` (Thu-Sat Accidental Candidate)
+### 3. `resources/clarai_machine_health_fan_v2.yml` (Fan Candidate — Thu-Sat 09:10 UTC)
 ```yaml
 resources:
   jobs:
@@ -1385,7 +1368,7 @@ resources:
           default: clarai_machine_health_fan_v2
 ```
 
-### 4. `resources/clarai_machine_health_motor.yml`
+### 4. `resources/clarai_machine_health_motor.yml` (Motor Primary Pipeline — Every 6 Hours)
 ```yaml
 resources:
   jobs:
@@ -1397,22 +1380,70 @@ resources:
         pause_status: UNPAUSED
       tasks:
         - task_key: score_readings
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/score_readings
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
         - task_key: apply_health_rules
+          depends_on:
+            - task_key: score_readings
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/apply_health_rules
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+          max_retries: 1
+          min_retry_interval_millis: 10000
         - task_key: build_maintenance_advice
+          depends_on:
+            - task_key: apply_health_rules
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/build_maintenance_advice
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
         - task_key: build_thermal_advice
+          depends_on:
+            - task_key: apply_health_rules
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/build_thermal_advice
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
         - task_key: collect_run_audit
-      existing_cluster_id: 0828-125833-31m6neog
+          depends_on:
+            - task_key: build_maintenance_advice
+            - task_key: build_thermal_advice
+          run_if: ALL_DONE
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/collect_run_audit
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+      parameters:
+        - name: machine_type
+          default: Motor
+        - name: merge_delay_sec
+          default: "30"
+```
 
-    Clone_of_clarai_machine_health_motor_weekly_run:
-      name: Clone of clarai_machine_health_motor_weekly_run
+### 5. `resources/clarai_machine_health_motor_weekly_run.yml` (Motor Weekly Run — Tue,Fri 16:00)
+```yaml
+resources:
+  jobs:
+    clarai_machine_health_motor_weekly_run:
+      name: clarai_machine_health_motor_weekly_run
       schedule:
         quartz_cron_expression: 0 0 16 ? * TUE,FRI
         timezone_id: Asia/Calcutta
         pause_status: UNPAUSED
-      existing_cluster_id: 0828-125833-31m6neog
+      tasks:
+        # Same 5 tasks as clarai_machine_health_motor
+        # Running on cluster: 0828-125833-31m6neog (clairai-model-metrics)
+      parameters:
+        - name: machine_type
+          default: Motor
+        - name: merge_delay_sec
+          default: "30"
 ```
 
-### 5. `resources/clairai_machine_health_compressor.yml`
+### 6. `resources/clairai_machine_health_compressor.yml` (Compressor Primary — Every 5 Hours)
 ```yaml
 resources:
   jobs:
@@ -1422,18 +1453,72 @@ resources:
         quartz_cron_expression: 0 0 */5 * * ?
         timezone_id: UTC
         pause_status: UNPAUSED
-      existing_cluster_id: 0828-125833-31m6neog
+      tasks:
+        - task_key: score_readings
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/score_readings
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+        - task_key: apply_health_rules
+          depends_on:
+            - task_key: score_readings
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/apply_health_rules
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+          max_retries: 1
+          min_retry_interval_millis: 10000
+        - task_key: build_maintenance_advice
+          depends_on:
+            - task_key: apply_health_rules
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/build_maintenance_advice
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+        - task_key: build_thermal_advice
+          depends_on:
+            - task_key: apply_health_rules
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/build_thermal_advice
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+        - task_key: collect_run_audit
+          depends_on:
+            - task_key: build_maintenance_advice
+            - task_key: build_thermal_advice
+          run_if: ALL_DONE
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/collect_run_audit
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+      parameters:
+        - name: machine_type
+          default: Compressor
+        - name: merge_delay_sec
+          default: "30"
+```
 
+### 7. `resources/clairai_machine_health_compressor_weekly_run.yml` (Compressor Weekly Run — Tue,Fri 16:00)
+```yaml
+resources:
+  jobs:
     clairai_machine_health_compressor_weekly_run:
       name: clairai_machine_health_compressor_weekly_run
       schedule:
         quartz_cron_expression: 0 0 16 ? * TUE,FRI
         timezone_id: Asia/Calcutta
         pause_status: UNPAUSED
-      existing_cluster_id: 0828-125833-31m6neog
+      tasks:
+        # Same 5 tasks as clairai_machine_health_compressor
+        # Running on cluster: 0828-125833-31m6neog (clairai-model-metrics)
+      parameters:
+        - name: machine_type
+          default: Compressor
+        - name: merge_delay_sec
+          default: "30"
 ```
 
-### 6. `resources/clarai_job_cost_monitoring.yml`
+### 8. `resources/clarai_job_cost_monitoring.yml` (Billing & Cost Monitoring — Daily 06:00 UTC)
 ```yaml
 resources:
   jobs:
@@ -1456,9 +1541,11 @@ resources:
       parameters:
         - name: lookback_days
           default: "7"
+        - name: job_names
+          default: "clairai_machine_health_compressor, clarai_machine_health_fan, clarai_machine_health_motor, clairai_machine_health_compressor_weekly_run, clarai_machine_health_motor_weekly_run"
 ```
 
-### 7. `resources/sensor_data.yml`
+### 9. `resources/sensor_data.yml` (Synthetic Telemetry Generator — Every 4 Hours)
 ```yaml
 resources:
   jobs:
