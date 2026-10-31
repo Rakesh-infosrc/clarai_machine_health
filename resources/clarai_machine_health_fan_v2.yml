@@ -1,0 +1,153 @@
+resources:
+  jobs:
+    clarai_machine_health_fan_v2:
+      name: clarai_machine_health_fan_v2
+      schedule:
+        quartz_cron_expression: "0 10 9 ? * THU,FRI,SAT"
+        timezone_id: "UTC"
+        pause_status: "UNPAUSED"
+      tasks:
+        - task_key: score_readings
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/score_readings
+            base_parameters:
+              execution_count: "{{task.execution_count}}"
+              fault_task: "{{job.parameters.fault_task}}"
+              inject_fault: "{{job.parameters.inject_fault}}"
+              job_id: "{{job.parameters.job_id}}"
+              job_name: "{{job.parameters.job_name}}"
+              job_run_id: "{{job.parameters.job_run_id}}"
+              machine_type: "{{job.parameters.machine_type}}"
+              merge_delay_sec: "{{job.parameters.merge_delay_sec}}"
+              model_version: "{{job.parameters.model_version}}"
+              task_key: score_readings
+              task_run_id: "{{task.run_id}}"
+              workspace_id: "{{job.parameters.workspace_id}}"
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+        - task_key: apply_health_rules
+          depends_on:
+            - task_key: score_readings
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/apply_health_rules
+            base_parameters:
+              execution_count: "{{task.execution_count}}"
+              fault_task: "{{job.parameters.fault_task}}"
+              inject_fault: "{{job.parameters.inject_fault}}"
+              job_id: "{{job.parameters.job_id}}"
+              job_name: "{{job.parameters.job_name}}"
+              job_run_id: "{{job.parameters.job_run_id}}"
+              machine_type: "{{job.parameters.machine_type}}"
+              merge_delay_sec: "{{job.parameters.merge_delay_sec}}"
+              task_key: apply_health_rules
+              task_run_id: "{{task.run_id}}"
+              workspace_id: "{{job.parameters.workspace_id}}"
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+          max_retries: 1
+          min_retry_interval_millis: 10000
+        - task_key: build_maintenance_advice
+          depends_on:
+            - task_key: apply_health_rules
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/build_maintenance_advice
+            base_parameters:
+              execution_count: "{{task.execution_count}}"
+              fault_task: "{{job.parameters.fault_task}}"
+              inject_fault: "{{job.parameters.inject_fault}}"
+              job_id: "{{job.parameters.job_id}}"
+              job_name: "{{job.parameters.job_name}}"
+              job_run_id: "{{job.parameters.job_run_id}}"
+              machine_type: "{{job.parameters.machine_type}}"
+              merge_delay_sec: "{{job.parameters.merge_delay_sec}}"
+              task_key: build_maintenance_advice
+              task_run_id: "{{task.run_id}}"
+              workspace_id: "{{job.parameters.workspace_id}}"
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+        - task_key: build_thermal_advice
+          depends_on:
+            - task_key: apply_health_rules
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/build_thermal_advice
+            base_parameters:
+              execution_count: "{{task.execution_count}}"
+              fault_task: "{{job.parameters.fault_task}}"
+              inject_fault: "{{job.parameters.inject_fault}}"
+              job_id: "{{job.parameters.job_id}}"
+              job_name: "{{job.parameters.job_name}}"
+              job_run_id: "{{job.parameters.job_run_id}}"
+              machine_type: "{{job.parameters.machine_type}}"
+              merge_delay_sec: "{{job.parameters.merge_delay_sec}}"
+              task_key: build_thermal_advice
+              task_run_id: "{{task.run_id}}"
+              workspace_id: "{{job.parameters.workspace_id}}"
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+        - task_key: generate_fan_model_issues
+          depends_on:
+            - task_key: apply_health_rules
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/generate_fan_model_issues
+            base_parameters:
+              clean_table: "{{job.parameters.clean_table}}"
+              execution_mode: "{{job.parameters.execution_mode}}"
+              job_id: "{{job.parameters.job_id}}"
+              job_run_id: "{{job.parameters.job_run_id}}"
+              model_version: "{{job.parameters.model_version}}"
+              scenario_stage: "{{job.parameters.scenario_stage}}"
+              time_anchor: "{{job.parameters.time_anchor}}"
+              workspace_id: "{{job.parameters.workspace_id}}"
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+        - task_key: collect_run_audit
+          depends_on:
+            - task_key: build_maintenance_advice
+            - task_key: build_thermal_advice
+            - task_key: generate_fan_model_issues
+          run_if: ALL_DONE
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/collect_run_audit
+            base_parameters:
+              execution_count: "1"
+              fault_task: "{{job.parameters.fault_task}}"
+              inject_fault: "{{job.parameters.inject_fault}}"
+              job_id: "{{job.parameters.job_id}}"
+              job_name: "{{job.parameters.job_name}}"
+              job_run_id: "{{job.parameters.job_run_id}}"
+              machine_type: "{{job.parameters.machine_type}}"
+              merge_delay_sec: "{{job.parameters.merge_delay_sec}}"
+              task_key: collect_run_audit
+              task_run_id: "{{task.run_id}}"
+              workspace_id: "{{job.parameters.workspace_id}}"
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+      queue:
+        enabled: true
+      parameters:
+        - name: machine_type
+          default: Fan
+        - name: model_version
+          default: fan_v2
+        - name: execution_mode
+          default: daily_incremental
+        - name: scenario_stage
+          default: accidental_deployment
+        - name: time_anchor
+          default: relative_to_now
+        - name: clean_table
+          default: "false"
+        - name: inject_fault
+          default: none
+        - name: fault_task
+          default: ""
+        - name: merge_delay_sec
+          default: "0"
+        - name: job_id
+          default: "{{job.id}}"
+        - name: job_run_id
+          default: "{{job.run_id}}"
+        - name: workspace_id
+          default: "{{workspace.id}}"
+        - name: job_name
+          default: clarai_machine_health_fan_v2

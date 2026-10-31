@@ -1,0 +1,31 @@
+resources:
+  jobs:
+    clarai_job_cost_monitoring:
+      name: clarai_job_cost_monitoring
+      schedule:
+        quartz_cron_expression: 0 0 6 * * ?
+        timezone_id: UTC
+        pause_status: UNPAUSED
+      tasks:
+        - task_key: ingest_job_costs
+          notebook_task:
+            notebook_path: /Workspace/Users/rakeshreddy.bijjam@infoservices.com/.bundle/clarai_machine_health/dev/files/src/job_cost_monitoring
+            base_parameters:
+              job_ids: "{{job.parameters.job_ids}}"
+              job_names: "{{job.parameters.job_names}}"
+              lookback_days: "{{job.parameters.lookback_days}}"
+            source: WORKSPACE
+          existing_cluster_id: 0828-125833-31m6neog
+      queue:
+        enabled: true
+      parameters:
+        - name: job_ids
+          default: ""
+        - name: job_names
+          default: clairai_machine_health_compressor, clarai_machine_health_fan,
+            clarai_machine_health_motor,
+            clairai_machine_health_compressor_weekly_run,
+            clairai_machine_health_motor_weekly_run
+        - name: lookback_days
+          default: "7"
+      performance_target: PERFORMANCE_OPTIMIZED
