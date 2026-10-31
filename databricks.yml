@@ -4,6 +4,13 @@ bundle:
 include:
   - resources/*.yml
 
+sync:
+  exclude:
+    - "Documents/**"
+    - "tests/**"
+    - ".vscode/**"
+    - "*.md"
+
 targets:
   dev:
     default: true
